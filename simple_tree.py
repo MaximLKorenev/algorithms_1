@@ -4,6 +4,7 @@ class SimpleTreeNode:
         self.NodeValue = val  # значение в узле
         self.Parent = parent  # родитель или None для корня
         self.Children = []  # список дочерних узлов
+        self.level = 0
 
 
 class SimpleTree:
@@ -29,11 +30,20 @@ class SimpleTree:
         NodeToDelete.Parent = None
 
     def GetAllNodes(self):
-        return []
+        list_nodes = []
+        root = self.Root
+        if root is None:
+            return list_nodes
+        get_nodes(list_nodes, root)
+        return list_nodes
+
 
     def FindNodesByValue(self, val):
-
-        return []
+        list_nodes = []
+        for node in self.GetAllNodes():
+            if node.NodeValue == val:
+                list_nodes.append(node)
+        return list_nodes
 
     def MoveNode(self, OriginalNode, NewParent):
 
@@ -45,9 +55,29 @@ class SimpleTree:
             OriginalNode.Parent = NewParent
 
     def Count(self):
-        # количество всех узлов в дереве
-        return 0
+        return len(self.GetAllNodes())
 
     def LeafCount(self):
-        # количество листьев в дереве
-        return 0
+        leaf_count = 0
+        for node in self.GetAllNodes():
+            if not node.Children:
+                leaf_count += 1
+        return leaf_count
+
+    def set_the_level(self):
+        list_nodes = self.GetAllNodes()
+        if not list_nodes:
+            return False
+
+        for node in list_nodes:
+            if node.Parent is None:
+                node.level = 0
+            else:
+                node.level = node.Parent.level + 1
+        return True
+
+
+def get_nodes(list_node, root):
+    list_node.append(root)
+    for child in root.Children:
+        get_nodes(list_node, child)
