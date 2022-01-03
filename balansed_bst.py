@@ -39,7 +39,7 @@ class BalancedBST:
         # создаём дерево с нуля из неотсортированного массива a
         sorted_arr = a.copy()
         sorted_arr.sort()
-        self.Root = BalancedBST.__GenerateTreeRec(None, sorted_arr, range(0, len(a)), 1)
+        self.Root = BalancedBST.__GenerateTreeRec(None, sorted_arr, range(0, len(a)), 0)
 
     def IsBalanced(self, root_node):
         # сбалансировано ли дерево с корнем root_node
