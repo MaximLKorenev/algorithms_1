@@ -18,7 +18,7 @@ class BalancedBST:
         range_length = len(work_range)
         if range_length == 0:
             return None
-        center_index = range_length // 2
+        center_index = int(range_length / 2)
         # корректировка: ключ правого потомка должен быть больше или равен ключу родителя
         while center_index > 0 and sorted_arr[work_range[center_index-1]] == sorted_arr[work_range[center_index]]:
             center_index -= 1
@@ -45,7 +45,7 @@ class BalancedBST:
         # сбалансировано ли дерево с корнем root_node
         def isBalancedRec(root_node):
             if root_node is None:
-                return True, 0
+                return (True, 0)
             else:
                 (leftBalanced, leftDepth) = isBalancedRec(root_node.LeftChild)
                 (rightBalanced, rightDepth) = isBalancedRec(root_node.RightChild)
@@ -54,5 +54,5 @@ class BalancedBST:
                 diff = maxD - minD
                 balanced = leftBalanced and rightBalanced and (diff <= 1)
                 return (balanced, maxD + 1)
-        balanced = isBalancedRec(root_node)
+        (balanced, _) = isBalancedRec(self.Root)
         return balanced
