@@ -147,6 +147,81 @@ class TestSimpleTreeMethods(unittest.TestCase):
         self.assertEqual(node_3.level, 2)
         self.assertEqual(node_4.level, 3)
 
+        def testEvenTrees(self):
+            S = SimpleTree(None)
+            self.assertEqual(S.EvenTrees(), [])
+            ns = []
+            for i in range(11):
+                n = SimpleTreeNode(i, None)
+                ns.append(n)
+            S.AddChild(None, ns[1])
+            S.AddChild(ns[1], ns[2])
+            S.AddChild(ns[1], ns[3])
+            S.AddChild(ns[1], ns[6])
+            S.AddChild(ns[2], ns[5])
+            S.AddChild(ns[2], ns[7])
+            S.AddChild(ns[3], ns[4])
+            S.AddChild(ns[6], ns[8])
+            S.AddChild(ns[8], ns[9])
+            self.assertEqual(S.EvenTrees(), [])
+            S.AddChild(ns[8], ns[10])
+            self.assertEqual(S.EvenTrees(), [ns[1], ns[3], ns[1], ns[6]])
+
+        def testEvenTrees2(self):
+            S = SimpleTree(None)
+            ns = []
+            for i in range(10):
+                n = SimpleTreeNode(i, None)
+                ns.append(n)
+            S.AddChild(None, ns[0])
+            S.AddChild(ns[0], ns[1])
+            S.AddChild(ns[0], ns[2])
+            S.AddChild(ns[0], ns[3])
+            S.AddChild(ns[1], ns[4])
+            S.AddChild(ns[2], ns[6])
+            S.AddChild(ns[3], ns[7])
+            S.AddChild(ns[4], ns[5])
+            S.AddChild(ns[7], ns[8])
+            S.AddChild(ns[7], ns[9])
+            self.assertEqual(S.EvenTrees(), [ns[1], ns[4], ns[0], ns[2], ns[0], ns[3]])
+
+    def testEvenTrees(self):
+        S = SimpleTree(None)
+        self.assertEqual(S.EvenTrees(), [])
+        ns = []
+        for i in range(11):
+            n = SimpleTreeNode(i, None)
+            ns.append(n)
+        S.AddChild(None, ns[1])
+        S.AddChild(ns[1], ns[2])
+        S.AddChild(ns[1], ns[3])
+        S.AddChild(ns[1], ns[6])
+        S.AddChild(ns[2], ns[5])
+        S.AddChild(ns[2], ns[7])
+        S.AddChild(ns[3], ns[4])
+        S.AddChild(ns[6], ns[8])
+        S.AddChild(ns[8], ns[9])
+        self.assertEqual(S.EvenTrees(), [])
+        S.AddChild(ns[8], ns[10])
+        self.assertEqual(S.EvenTrees(), [ns[1], ns[3], ns[1], ns[6]])
+
+    def testEvenTrees2(self):
+        S = SimpleTree(None)
+        ns = []
+        for i in range(10):
+            n = SimpleTreeNode(i, None)
+            ns.append(n)
+        S.AddChild(None, ns[0])
+        S.AddChild(ns[0], ns[1])
+        S.AddChild(ns[0], ns[2])
+        S.AddChild(ns[0], ns[3])
+        S.AddChild(ns[1], ns[4])
+        S.AddChild(ns[2], ns[6])
+        S.AddChild(ns[3], ns[7])
+        S.AddChild(ns[4], ns[5])
+        S.AddChild(ns[7], ns[8])
+        S.AddChild(ns[7], ns[9])
+        self.assertEqual(S.EvenTrees(), [ns[1], ns[4], ns[0], ns[2], ns[0], ns[3]])
 
 
 if __name__ == '__main__':

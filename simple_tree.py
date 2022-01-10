@@ -34,6 +34,12 @@ class SimpleTree:
         root = self.Root
         if root is None:
             return list_nodes
+
+        def get_nodes(list_node, root):
+            list_node.append(root)
+            for child in root.Children:
+                get_nodes(list_node, child)
+
         get_nodes(list_nodes, root)
         return list_nodes
 
@@ -76,8 +82,44 @@ class SimpleTree:
                 node.level = node.Parent.level + 1
         return True
 
+    def CountSubTree(node):
 
-def get_nodes(list_node, root):
-    list_node.append(root)
-    for child in root.Children:
-        get_nodes(list_node, child)
+        def f(acc, x):
+            return acc + 1
+
+        return SimpleTree.FoldTree(f, 0, node)
+
+    def FoldTree(f, acc, root_node):
+        if root_node is None:
+            return acc
+        acc1 = f(acc, root_node)
+        for elem in root_node.Children:
+            acc1 = SimpleTree.FoldTree(f, acc1, elem)
+        return acc1
+
+    def EvenTrees(self):
+        def isEven(num):
+            return (num % 2) == 0
+
+        def EvenTreesRec(node, parent):
+            if len(node.Children) == 0:
+                return []
+            edges_to_remove = []
+            count = SimpleTree.CountSubTree(node)
+            if isEven(count) and parent is not None:
+                edges_to_remove.append((parent, node))
+            for c in node.Children:
+                edges_to_remove.extend(EvenTreesRec(c, node))
+            return edges_to_remove
+
+        count = self.Count()
+        if not isEven(count) or count == 0:
+            return []
+
+        edge_list = EvenTreesRec(self.Root, None)
+        result = []
+        for e in edge_list:
+            (n1, n2) = e
+            result.append(n1)
+            result.append(n2)
+        return result
