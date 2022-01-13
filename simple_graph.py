@@ -2,6 +2,7 @@ class Vertex:
 
     def __init__(self, val):
         self.Value = val
+        self.Hit = False
 
 
 class SimpleGraph:
@@ -46,3 +47,58 @@ class SimpleGraph:
         if v1 < self.max_vertex and v2 < self.max_vertex:
             self.m_adjacency[v1][v2] = 0
             self.m_adjacency[v2][v1] = 0
+
+    def DepthFirstSearch(self, VFrom, VTo):
+        # узлы задаются позициями в списке vertex
+        # возвращается список узлов -- путь из VFrom в VTo
+        # или [] если пути нету
+        if self.vertex[VFrom] is None or self.vertex[VTo] is None:
+            return []
+        # 0. помечаем все узлы как непосещенные, очищаем стек
+        for v in self.vertex:
+            if v is not None:
+                v.Hit = False
+        path = []
+        # 1. Выбираем текущую вершину X. Для начала работы это будет
+        # исходная вершина
+        x = VFrom
+        while True:
+            if not self.vertex[x].Hit:
+                # 2. Фиксируем вершину X как посещённую
+                self.vertex[x].Hit = True
+                # 3. Помещаем вершину X в стек.
+                path.append(x)
+            # 4. Ищем среди смежных вершин вершины X целевую вершину Б.
+            if self.IsEdge(x, VTo):
+                path.append(VTo)
+                break
+            # Если целевой вершины среди смежных нету, то выбираем среди
+            # смежных такую вершину, которая ещё не была посещена.
+            # Если такая вершина найдена, делаем её текущей X и переходим к п.2.
+            next_vertex_fount = False
+            for i in range(self.max_vertex):
+                if self.IsEdge(x, i) and not self.vertex[i].Hit:
+                    x = i
+                    next_vertex_fount = True
+                    break
+            if next_vertex_fount:
+                continue
+            # 5. Если непосещённых смежных вершин более нету, удаляем из стека
+            # верхний элемент
+            path.pop()
+            if len(path) == 0:
+                # Если стек пуст, то прекращаем работу и информируем,
+                # что путь не найден.
+                return []
+            else:
+                # В противном случае делаем текущей вершиной X верхний элемент
+                # стека, помечаем его как посещённый, и переходим к п.4
+                x = path[-1]
+                self.vertex[x].Hit = True
+                continue
+
+        vertex_path = []
+        for i in path:
+            vertex_path.append(self.vertex[i])
+        return vertex_path
+
