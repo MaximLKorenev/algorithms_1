@@ -102,3 +102,43 @@ class SimpleGraph:
             vertex_path.append(self.vertex[i])
         return vertex_path
 
+    def BreadthFirstSearch(self, VFrom, VTo):
+        # узлы задаются позициями в списке vertex
+        # возвращается список узлов -- путь из VFrom в VTo
+        # или [] если пути нету
+        if self.vertex[VFrom] is None or self.vertex[VTo] is None:
+            return []
+        for v in self.vertex:
+            if v is not None:
+                v.Hit = False
+        queue = []
+        path = {}
+        x = VFrom
+        self.vertex[x].Hit = True
+        path[x] = [x]
+        while True:
+            if self.IsEdge(x, VTo):
+                p = path[x].copy()
+                p.append(VTo)
+                path[VTo] = p
+                path.pop(x)
+                break
+            adj_found = False
+            for i in range(self.max_vertex):
+                if self.IsEdge(x, i) and not self.vertex[i].Hit:
+                    adj_found = True
+                    self.vertex[i].Hit = True
+                    queue.append(i)
+                    p = path[x].copy()
+                    p.append(i)
+                    path[i] = p
+            if adj_found:
+                path.pop(x)
+            if len(queue) == 0:
+                return []
+            else:
+                x = queue.pop(0)
+        vertex_path = []
+        for i in path[VTo]:
+            vertex_path.append(self.vertex[i])
+        return vertex_path
