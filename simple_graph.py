@@ -142,3 +142,29 @@ class SimpleGraph:
         for i in path[VTo]:
             vertex_path.append(self.vertex[i])
         return vertex_path
+
+    def WeakVertices(self):
+        # возвращает список узлов вне треугольников
+        isWeak = [True] * self.max_vertex
+        for v in range(self.max_vertex):
+            if not isWeak[v]:
+                continue
+            adjs = []
+            for i in range(self.max_vertex):
+                if self.IsEdge(v, i):
+                    adjs.append(i)
+            for a in adjs:
+                if isWeak[v]:
+                    for b in adjs:
+                        if self.IsEdge(a, b):
+                            isWeak[v] = False
+                            isWeak[a] = False
+                            isWeak[b] = False
+                            break
+                else:
+                    break
+        weakvs = []
+        for i in range(self.max_vertex):
+            if isWeak[i]:
+                weakvs.append(self.vertex[i])
+        return weakvs
